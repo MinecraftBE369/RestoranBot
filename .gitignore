@@ -1,0 +1,14 @@
+# Окружение
+.env
+.venv/
+venv/
+env/
+
+# Базы данных
+*.sqlite3
+*.db
+*.sqlite
+
+# Python
+__pycache__/
+*.py[cod]
