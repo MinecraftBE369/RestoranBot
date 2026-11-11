@@ -11,6 +11,8 @@ from config import BOT_TOKEN, PROXY_URL
 # Импортируем функцию создания таблиц из папки database
 from database import init_db
 
+from middlewares.registration import DbSessionMiddleware, RegistrationMiddleware
+
 # Импортируем роутеры из папок handlers
 # (убедись, что файлы start.py и promote.py созданы внутри этих папок!)
 from handlers.user.start import router as user_router
@@ -32,6 +34,15 @@ storage = MemoryStorage()
 
 # === ДИСПЕТЧЕР ===
 dp = Dispatcher(storage=storage)
+
+# ====== ПОДКЛЮЧЕНИЕ MIDDLEWARE ======
+# Middleware подключаются к диспетчеру для обработки сообщений и колбэков
+# Порядок важен: DbSessionMiddleware должен быть первым (открывает сессию БД)
+dp.message.middleware(DbSessionMiddleware())
+dp.message.middleware(RegistrationMiddleware())
+
+dp.callback_query.middleware(DbSessionMiddleware())
+dp.callback_query.middleware(RegistrationMiddleware())
 
 # === ИНИЦИАЛИЗАЦИЯ РОУТЕРОВ ===
 # Подключаем роутеры к диспетчеру, чтобы бот знал, где искать хендлеры

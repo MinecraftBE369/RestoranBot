@@ -18,5 +18,15 @@ BOT_TOKEN = os.getenv("BOT_TOKEN")
 #  4. превращаем map обратно в нормальный список (list())
 ADMINS_IDS = [int(x.strip()) for x in os.getenv("ADMINS_IDS", "").split(",") if x.strip()]
 
-# === ЛОКАЬНЫЙ ПРОКСИ ОТ VPN ===
-PROXY_URL = "http://127.0.0.1:10809"
+# === ЛОКАЛЬНЫЙ ПРОКСИ ОТ VPN ===
+# Если прокси не нужен — оставь переменную PROXY_URL в .env пустой
+PROXY_URL = os.getenv("PROXY_URL") or None
+
+# === БАЗА ДАННЫХ ===
+# Для тестов — SQLite (файл restaurant.db в корне проекта)
+# Для продакшена — PostgreSQL, например:
+#   postgresql+asyncpg://user:password@localhost:5432/restaurant
+DATABASE_URL = os.getenv(
+    "DATABASE_URL",
+    "sqlite+aiosqlite:///./restaurant.db"
+)

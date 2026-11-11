@@ -1,10 +1,12 @@
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
 from database.models import Base
+from config import DATABASE_URL
 
-# SQLite в асинхронном режиме — префикс "sqlite+aiosqlite://"
-# Файл БД будет называться restaurant.db и лежать в корне проекта
-DATABASE_URL = "sqlite+aiosqlite:///./restaurant.db"
+# URL берём из config.py:
+#   - по умолчанию SQLite ("sqlite+aiosqlite:///./restaurant.db") — для тестов
+#   - через переменную окружения DATABASE_URL можно указать PostgreSQL
+#     ("postgresql+asyncpg://user:pass@host:5432/db") — для продакшена
 
 # Создаём движок — он управляет подключением к БД
 engine = create_async_engine(DATABASE_URL, echo=False)  # echo=True для отладки SQL
